@@ -3,7 +3,7 @@ from database import create_database,User,engine
 from contextlib import asynccontextmanager
 
 from sqlmodel import Session
-
+from routes.auth import userrouter
 
 
 
@@ -16,20 +16,9 @@ async def lifespan(app:FastAPI):
 
 app=FastAPI(lifespan=lifespan)
 
+app.include_router(userrouter,prefix="/auth",tags=["auth"])
+
     
-@app.get("/")
-async def root():
-    print("hello")
-    return {"message":"hello world"}
 
-
-@app.post("/createuser")
-def create_user(user:User):
-    with Session(engine) as session:
-        session.add(user)
-        session.commit()
-        session.refresh(user)
-
-        return session  
 
 
