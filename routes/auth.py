@@ -1,9 +1,14 @@
 from fastapi import APIRouter
 from database import User
 from sqlmodel import Session,select
+from datetime import timedelta
+from utils.jwt import create_access_token
 from main import engine
+from dotenv import load_dotenv
+import os
 userrouter=APIRouter()
 
+load_dotenv()
 
 @userrouter.get("/",tags=["check"])
 async def check_route():
@@ -26,8 +31,15 @@ async def signup(user:User)-> User:
         session.add(user)
         session.commit()
         session.refresh(user)
-        return user
+        access_token_expires = timedelta(minutes=int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")))
 
+
+        access_token = create_access_token(
+        data={"sub": user.name}, expires_delta=access_token_expires
+       
+    )
+        print(access_token)
+        return user
 @userrouter.get("/getusers")
 async def getUsers():
     with Session(engine) as session:
@@ -39,5 +51,8 @@ async def getUsers():
 async def getUser(user_id:int):
     with Session(engine) as session:
         user = session.exec(select(User).where(User.id == user_id)).first()
+
+        if(user):
+            print(f"user found: {user}")
 
         return user
