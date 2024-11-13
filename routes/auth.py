@@ -1,8 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Depends
 from database import User
 from sqlmodel import Session,select
 from datetime import timedelta
-from utils.jwt import create_access_token
+from utils.jwt import create_access_token,verify_token
 from main import engine
 from dotenv import load_dotenv
 import os
@@ -56,3 +56,9 @@ async def getUser(user_id:int):
             print(f"user found: {user}")
 
         return user
+
+
+@userrouter.post("/check")
+
+async def protect(current_user:dict=Depends(verify_token)):
+    return  current_user
