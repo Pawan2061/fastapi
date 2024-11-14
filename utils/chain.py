@@ -13,5 +13,3 @@ def setupChain():
     chain=prompt | llm | StrOutputParser()
     print(chain)
     return chain
-
-

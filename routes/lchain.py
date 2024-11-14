@@ -1,29 +1,3 @@
-# from fastapi import APIRouter,Depends
-# from sqlmodel import Session
-# from main import engine
-# from utils.chain import setupChain
-# from database import ChainRequest
-# chainRouter=APIRouter()
-
-# chain=setupChain()
-
-
-# @chainRouter.post("/")
-
-# async def get_ans(request:ChainRequest):
-#     print("inside chain")
-#     topic = request.topic
-#     print("the topic is ",topic)
-#     ans = await chain.invoke({"topic": topic})
-
-#     if ans:
-
-#         print("got the ans",ans)
-#         return ans
-#     else:   
-#         print("some problems is here")
-#         return "pro"
-
 
   
 
