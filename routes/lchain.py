@@ -1,11 +1,5 @@
-
-  
-
-
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException
 from utils.chain import setupChain
-from pydantic import BaseModel
 from database import ChainRequest
 
 chain = setupChain()
@@ -17,11 +11,21 @@ chainRouter = APIRouter()
 @chainRouter.post("/")
 async def get_ans(request: ChainRequest):
     print("Inside chain")
-    topic = request.topic
-    print(f"The topic is {topic}")
-
+    context=request.context
+    question = request.question
+    
+    print(f"The topic is {question}")
+    input_data={
+        "context":context,
+        "question":question
+    }
+ 
     try:
-        ans =  chain.invoke({"topic": topic})
+        
+        ans =  chain.invoke(input_data)
+        print("got the ans")
+        for chunk in chain.stream(input_data):
+            print(chunk,end="|",flush=True)
 
         if ans:
             print(f"Got the answer: {ans}")

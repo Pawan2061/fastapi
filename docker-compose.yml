@@ -1,0 +1,24 @@
+# version: "3.8"
+
+# services:
+#   qdrant:
+#     image: qdrant/qdrant
+#     container_name: qdrant_container
+#     ports:
+#       - "6333:6333"
+#       - "6334:6334"
+#     volumes:
+#       - "/c/Users/dipendra bhatta/qdrant_storage:/qdrant/storage"
+
+version: "3.8"
+
+services:
+  fastapi:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

@@ -2,13 +2,15 @@ from sqlmodel import Field,SQLModel,create_engine,select,table
 class User(SQLModel,table=True):
     id: int | None=Field(default=None,primary_key=True)
 
-    name: str=Field(index=None)
+    username: str=Field(index=None)
     age: int | None=Field(default=None,index=True)
 
 
 class ChainRequest(SQLModel,table=True):
     id: int | None=Field(default=None,primary_key=True)
-    topic: str=Field(index=None)
+    context: str=Field(index=None)
+    question: str=Field(index=None)
+
 
 
 
